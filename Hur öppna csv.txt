@@ -1,0 +1,2 @@
+csv-filen har ; som separator. Öppning sker via:
+foo <- read.csv(file.choose(), header=T, sep=";")
