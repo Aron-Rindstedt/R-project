@@ -31,17 +31,18 @@ init <- function() {
     
     ## Import data file
     if (!exists("shelter.data")){
-        cat("Please select the shelter data text file.\n")
-        shelter.path <- file.choose()
-        shelter.data <- read.table(shelter.path, header=T)
+        cat("Please select the shelter data csv file.\n")
+        shelter.data <- read.csv(file.choose(), header=T, sep=";")
         assign("shelter.data", shelter.data, envir = .GlobalEnv)
     }
 }
 
 ##TODO Examine importance of features (even if you will not discard any).
 examine <- function(){
-    return(summary(
-               lm(Items~.,shelter.data))$coefficients)
+  cat("Number of items vs. time, dmg and SPECIAL stats:\n")
+  print(summary(lm(n~.,shelter.data))$coefficients)
+  cat("\n\nNumber of items/h vs. dmg and SPECIAL stats:\n")
+  print(summary(lm(n/time~.,shelter.data))$coefficients)
 }
 
 ##TODO If too many features:
