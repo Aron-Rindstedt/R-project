@@ -1,0 +1,22 @@
+\subsection{Introduction and Game Mechanics}
+Fallout Shelter is a free-to-play mobile simulation video game developed by Bethesda Game Studios. It was released as a teaser for the fourth installment in the Fallout series scheduled for late 2015.\\
+
+In Fallout Shelter, players build, extend, and manage their own \textbf{vault} as an overseer in a post-apocalyptic world after a nuclear war. The players rescue \textbf{dwellers} from the wasteland and assign them to resource generating structures within the vault. Each dweller has a set of seven SPECIAL stats: Strength, Perception, Endurance, Charisma, Intelligence, Agility, and Luck. Each character's SPECIAL affects their skill at generating different forms of resources. The statistics of a dweller can be increased by training.\\
+
+Dwellers can also level up and be given new armor and weapons, which are useful when sent out into the wasteland to scout for additional (potentially better) gear and bottle caps, which are being used as currency.\\
+
+Every minute-mark, a scouting dweller come across an enemy. The dweller can either (automatically) run from the enemy or try to fight it. In the first case the dweller can either be successful in running away or have to face the opponent. If fighing the dweller either loses and suffers damage or wins and takes caps and/or gear. When a dweller reaches zero health it dies.\\
+
+The aim of this report was to investigate the roles of the different stats when calculating the success of a dweller sent to the wasteland. We have only counted pieces of gear and amount of bottle caps, even though one could also examine experience points per time or use some other metric.
+
+\subsection{Assumptions and Simplifications}
+\begin{itemize}
+\item Even though all gear are not created equal and some pieces are strictly better than others, or not comparable (weapons versus armor), we have disregarded this and just counted the number of found pieces.
+\item There is no way to see how close a character is to leveling up, so we have not logged this.
+\item Characters finding strictly better gear\footnote{Giving a higher boost for each boosted stat.} than currently equipped will change into the new piece. In order to keep logging feasible we have equipped reasonable gear to begin with and will sometimes assume no gear has been changed during the scouting.
+\end{itemize}
+
+\subsection{Data Collection Method}
+The data was collected in two datasets. For the first dataset we sent 31 dwellers\footnote{Each dweller had full health and 25 \textbf{stimpaks} (for replenishing health) and 15 \textbf{radaways} (for removing radiation damage immune to stimpaks).} into the wasteland logging the number of found items as well as the dweller's SPECIAL, damage, level and time. Each dweller was logged up to 17 times, depending on for how long it lived.\\
+
+For the second dataset, we sent 105 dwellers into the wasteland. By adding a day to the internal clock of the iPhone the game ran on, we were sure that every dweller had died\footnote{The game calculates its state depending on the running machine's internal clock, rather than using some server's time.}. The SPECIAL stats, inital and final level, inital and final damage, time until death, and number of bottle caps found was logged.
