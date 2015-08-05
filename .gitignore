@@ -141,3 +141,4 @@ sympy-plots-for-*.tex/
 # WinEdt
 *.bak
 *.sav
+/R-files/.RData
