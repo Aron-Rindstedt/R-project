@@ -10,12 +10,10 @@ Every minute-mark, a scouting dweller come across an enemy. The dweller can eith
 \subsection{Aim}
 The aim of this report is to investigate the roles of the different stats when calculating the ``success'' of a dweller sent to the wasteland. We are only going to count the number of pieces of gear, and amount of bottle caps even though one could also examine experience points per time or use some other metric. Furthermore, we are going to measure a dwellers \textit{success} in terms of number of items per hour and number of caps per hour, respectively.\\
 
-The statistical model is useful when trying to optimize ones vault. Accuracy is not very important since this optimization is more of a qualitative problem; we want to be able to compare two characters and we need the model to deduce if one is significantly better than the other.\\
-
 We have two points of interest:
 \begin{enumerate}
-\item We want to be able to find the dweller with the highest success rate from a list of dwellers using SPECIAL stats and weapon damage. Remember that success is measured in number of items or caps per hour.
-\item We want to be able to estimate the survival time of this dweller in to avoid having to pay the revival fee.
+\item We want to be able to find the dweller with the highest success rate from a list of dwellers using SPECIAL stats and weapon damage. Remember that success is measured in number of items or caps per hour. Accuracy is not very important since this optimization is more of a qualitative problem; we want to be able to compare two characters and we need the model to deduce if one is significantly better than the other. 
+\item We want to be able to estimate the survival time of this dweller in to avoid having to pay the revival fee. Here, accuracy is of higher importance.
 \end{enumerate}
 
 \subsection{Assumptions and Simplifications}
