@@ -32,10 +32,8 @@ divide <- function(x){
 
 init <- function() {
     packages <- installed.packages()
-    ##TODO: Install missing required packages
-    ##TODO: Include required packages
     
-    ##DONE Import data files
+    # Import data files
     if (!exists("n.items")){
         cat("Please select the shelter_number data csv file.\n")
         n.items <- read.csv(file.choose(), header=T, sep=";")
@@ -45,32 +43,34 @@ init <- function() {
       cat("Please select the shelter_survival data csv file.\n")
       survival.time <- read.csv(file.choose(), header=T, sep=";")
       survival.time <- subset(survival.time, select = -c(name))
+      survival.time$death.level <- survival.time$death.level - survival.time$start.level
+      colnames(survival.time)[11] <- "level.increase"
       assign("survival.time", survival.time, envir = .GlobalEnv)
     }
 }
 
-##DONE? Examine importance of features (even if you will not discard any).
+# Examine importance of features (even if you will not discard any).
 examine <- function(){
-  cat("Number of items vs. time, dmg and SPECIAL stats:\n")
-  print(summary(lm(n~.,n.items))$coefficients)
   cat("\n\nNumber of items/h vs. dmg and SPECIAL stats:\n")
   print(summary(lm(n/time~.,n.items))$coefficients)
-  cat("\n\nSurvival time vs. dmg and SPECIAL stats")
+  cat("\n\nSurvival time vs. dmg and SPECIAL stats:\n")
   print(summary(lm(survival.time~.,survival.time))$coefficients)
-  cat("\n\nCaps/hour vs. dmg and SPECIAL stats")
+  cat("\n\nCaps vs. time, dmg and SPECIAL stats:\n")
+  print(summary(lm(caps~.,survival.time))$coefficients)
+  cat("\n\nCaps/hour vs. dmg and SPECIAL stats:\n")
   print(summary(lm(caps/survival.time~.,survival.time))$coefficients)
 }
 
 ##TODO If too many features:
-  ##TODO Select those of low importance from step 2 to remove.
-  ##TODO Reduce dimensionality using PCA.
+##TODO Select those of low importance from step 2 to remove.
+##TODO Reduce dimensionality using PCA.
 reduce.num <- function(){
     n.items
 }
 
 ##TODO If too many features:
-  ##TODO Select those of low importance from step 2 to remove.
-  ##TODO Reduce dimensionality using PCA.
+##TODO Select those of low importance from step 2 to remove.
+##TODO Reduce dimensionality using PCA.
 reduce.sur <- function(){
     survival.time
 }
@@ -81,7 +81,7 @@ MSE <- function(x,y){
 
 model <- function(){
     ##TODO Select a number of model types.
-      ##TODO Create models of each type, using an appropriate range of hyperparameters and from different features if desired (ie some from PCA, others from natural features)
+    ##TODO Create models of each type, using an appropriate range of hyperparameters and from different features if desired (ie some from PCA, others from natural features)
     t.num <- n.items.train
     models.num <- list(lm(n~.,t.num))
 
@@ -98,7 +98,6 @@ model <- function(){
                 models.sur[[which.min(error.sur)]]))
 }
 
-##DONE Evaluate selected model
 evaluate <- function(models){
     model.num <- models[[1]]
     model.sur <- models[[2]]
