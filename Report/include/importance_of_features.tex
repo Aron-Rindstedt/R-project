@@ -1,0 +1,94 @@
+%Explain feature importance scores used, and give tables/graphs of feature importance scores.
+%Explain if features were removed or if PCA was applied.
+Tables \ref{table:n.items} through  \ref{table:survival.time} contains the results when calling \texttt{summary} on the respective linear models. The following encoding for p-values are used:
+
+\begin{tabular}{l|l}
+\textbf{p-value}&\textbf{Encoding}\\
+\hline
+$0<p\leq.001$	& ***\\
+$.001<p\leq.01$	& **\\
+$.01<p\leq.05$	& *\\
+$.05<p\leq.1$	& .\\
+$.1<p\leq1$		& \textit{blank}\\
+
+
+\end{tabular}
+
+\begin{table}
+\caption{Number of items per hour}
+\label{table:n.items}
+\begin{tabular}{l|lllll}
+&Estimate Std.&Error&t value&Pr(>|t|) &\\ 
+\hline
+(Intercept)&1.290960 &0.771921 &1.672&0.0959&.\\
+level&-0.021353  & 0.017178 & -1.243 &  0.2152&  \\
+dmg&-0.060882  & 0.057463 & -1.059 &  0.2906&  \\
+s&-0.003986  & 0.055532 & -0.072  & 0.9428&  \\
+p&-0.079242 &  0.095350 & -0.831 &  0.4069 & \\
+e&0.031539 &  0.070731 &  0.446  & 0.6561&  \\
+c& -0.057148  & 0.091382 & -0.625 &  0.5324&  \\
+i&0.324587&0.335993&   0.966&   0.3351&  \\
+a&0.214665&0.133610 &  1.607&   0.1096&  \\
+l&0.042945&0.073570&0.584&0.5600&\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Average number of caps per hour}
+\label{table:caps}
+\begin{tabular}{l|lllll}
+&Estimate&Std. Error&t value&Pr(>|t|)&\\  
+\hline  
+(Intercept)&83.31893  & 10.72063 &  7.772 &1.01e-11& ***\\
+s &-0.41963  &  0.60547 & -0.693 &   0.490 &   \\
+p& 0.40472  &  0.75732  & 0.534 &   0.594 &   \\
+e & -0.94006  &  0.71014  &-1.324 &   0.189 &   \\
+c&-0.43857  &  0.65616&  -0.668  &  0.506 &   \\
+i& 0.09432  &  0.64471  & 0.146  &  0.884 &   \\
+a  & -0.06736 &   0.61892 & -0.109 &   0.914&    \\
+l &   13.47630  &  0.57793 & 23.318&  < 2e-16& ***\\
+start.level &  -0.72609  &  0.18249 &  -3.979 &   0.000137 & *** \\ 
+start.damage& -1.40079  &  1.40423 & -0.998 &   0.321 &  \\ 
+level.increase & -1.76098 &   2.30341 & -0.765 &   0.446 &  \\ 
+death.damage & 0.41361  & 1.26288 &  0.328  &  0.744&\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}
+\label{table:survival.time}
+\caption{Survival time}
+\begin{tabular}{l|lllll}
+&Estimate&Std. Error&t value& Pr(>|t|)&  \\ 
+\hline 
+(Intercept)&-0.1392181 & 0.4535453 & -0.307& 0.759571 &  \\ 
+s&0.0266912 & 0.0249413 &  1.070& 0.287347 &   \\
+p&0.0051071 & 0.0311739 &  0.164& 0.870227 &   \\
+e&0.1386983 & 0.0292396 &  4.744& 7.66e-06 &***\\
+c&0.0033259 & 0.0270482 &  0.123 &0.902404 & \\  
+i&0.0311700 & 0.0268597 &  1.160& 0.248859 & \\  
+a&-0.0104891 & 0.0256568 & -0.409& 0.683621 &  \\ 
+l&-0.2387383 & 0.0493878 & -4.834& 5.34e-06 &***\\
+start.level& 0.1107089 & 0.0096806 & 11.436& < 2e-16& ***\\
+start.damage&-0.0001271 & 0.0578344 & -0.002& 0.998251&  \\ 
+level.increase&  0.4743358 & 0.1033928 &  4.588& 1.41e-05& ***\\
+caps&0.0030537 & 0.0005477  & 5.576& 2.45e-07 &***\\
+death.damage & 0.1601620 & 0.0524110  & 3.056& 0.002937& ** \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Items per hour}
+In the case of number of items per hour only the intercept had a somewhat significant value. We deduced that all dwellers have the same chance of finding items.
+
+\subsection{Caps per hour}
+The only three significant predictors were the intercept, Luck, and the starting level.
+
+\subsection{Survival time}
+Significant predictors were \texttt{e}, \texttt{l}, \texttt{start.level}, \texttt{level.increase}, \texttt{caps}, and \texttt{death.damage}. However, since we only were interested in predictors known before sending the dweller out we discarded all but Endurance, Luck, and the level when starting.
+
+\subsection{Irrelevance of PCA}
+Since all of the selected features in the respective models were known to be independent, PCA would not have helped.
+
+

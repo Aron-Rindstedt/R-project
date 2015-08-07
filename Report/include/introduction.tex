@@ -5,18 +5,28 @@ In Fallout Shelter, players build, extend, and manage their own \textbf{vault} a
 
 Dwellers can also level up and be given new armor and weapons, which are useful when sent out into the wasteland to scout for additional (potentially better) gear and bottle caps, which are being used as currency.\\
 
-Every minute-mark, a scouting dweller come across an enemy. The dweller can either (automatically) run from the enemy or try to fight it. In the first case the dweller can either be successful in running away or have to face the opponent. If fighing the dweller either loses and suffers damage or wins and takes caps and/or gear. When a dweller reaches zero health it dies.\\
+Every minute-mark, a scouting dweller come across an enemy. The dweller can either (automatically) run from the enemy or try to fight it. In the first case the dweller can either be successful in running away or have to face the opponent. If fighing the dweller either loses and suffers damage or wins and takes caps and/or gear. When a dweller reaches zero health it dies. A dead dweller can be revived for a fee.\\
 
-The aim of this report was to investigate the roles of the different stats when calculating the success of a dweller sent to the wasteland. We have only counted pieces of gear and amount of bottle caps, even though one could also examine experience points per time or use some other metric.
+\subsection{Aim}
+The aim of this report is to investigate the roles of the different stats when calculating the ``success'' of a dweller sent to the wasteland. We are only going to count the number of pieces of gear, and amount of bottle caps even though one could also examine experience points per time or use some other metric. Furthermore, we are going to measure a dwellers \textit{success} in terms of number of items per hour and number of caps per hour, respectively.\\
+
+The statistical model is useful when trying to optimize ones vault. Accuracy is not very important since this optimization is more of a qualitative problem; we want to be able to compare two characters and we need the model to deduce if one is significantly better than the other.\\
+
+We have two points of interest:
+\begin{enumerate}
+\item We want to be able to find the dweller with the highest success rate from a list of dwellers using SPECIAL stats and weapon damage. Remember that success is measured in number of items or caps per hour.
+\item We want to be able to estimate the survival time of this dweller in to avoid having to pay the revival fee.
+\end{enumerate}
 
 \subsection{Assumptions and Simplifications}
 \begin{itemize}
-\item Even though all gear are not created equal and some pieces are strictly better than others, or not comparable (weapons versus armor), we have disregarded this and just counted the number of found pieces.
-\item There is no way to see how close a character is to leveling up, so we have not logged this.
-\item Characters finding strictly better gear\footnote{Giving a higher boost for each boosted stat.} than currently equipped will change into the new piece. In order to keep logging feasible we have equipped reasonable gear to begin with and will sometimes assume no gear has been changed during the scouting.
+\item Even though all gear are not created equal and some pieces are strictly better than others, or not comparable (weapons versus armor), we are going to disregard this and just count the number of found pieces.
+\item There is no way to see how close a character is to leveling up, so we are not going to log this.
+\item Characters finding strictly better gear\footnote{Giving a higher boost for each boosted stat.} than currently equipped will change into the new piece. In order to keep logging feasible we are equipping reasonable gear to begin with and will sometimes assume no gear has been changed during the scouting.
+\item Even though the SPECIAL stats are discrete from $\mathbb{N}^+$, we will perform regression as though they were elements in $\mathbb{R}^+$.\footnote{Here, superscript + means positive.}
 \end{itemize}
 
 \subsection{Data Collection Method}
-The data was collected in two datasets. For the first dataset we sent 31 dwellers\footnote{Each dweller had full health and 25 \textbf{stimpaks} (for replenishing health) and 15 \textbf{radaways} (for removing radiation damage immune to stimpaks).} into the wasteland logging the number of found items as well as the dweller's SPECIAL, damage, level and time. Each dweller was logged up to 17 times, depending on for how long it lived.\\
+The data was collected in two datasets. For the first dataset we sent 31 dwellers\footnote{Each dweller had full health and 25 \textbf{stimpaks} (for replenishing health) and 15 \textbf{radaways} (for removing radiation damage which is not affected by stimpaks).} into the wasteland logging the number of found items as well as the dweller's SPECIAL, current damage, level and time. Each dweller was logged up to 17 times, depending on for how long it lived.\\
 
 For the second dataset, we sent 105 dwellers into the wasteland. By adding a day to the internal clock of the iPhone the game ran on, we were sure that every dweller had died\footnote{The game calculates its state depending on the running machine's internal clock, rather than using some server's time.}. The SPECIAL stats, inital and final level, inital and final damage, time until death, and number of bottle caps found was logged.
