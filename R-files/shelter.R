@@ -1,13 +1,13 @@
 run <- function(){
     init()
     coef <- examine()
-    reduced.num <- reduce.num()
+    ## reduced.num <- reduce.num()
     reduced.sur <- reduce.sur()
     
-    shelter.list <- divide(reduced.num)
-    assign("n.items.train", shelter.list[[1]], envir = .GlobalEnv)
-    assign("n.items.val", shelter.list[[2]], envir = .GlobalEnv)
-    assign("n.items.test", shelter.list[[3]], envir = .GlobalEnv)
+    ## shelter.list <- divide(reduced.num)
+    ## assign("n.items.train", shelter.list[[1]], envir = .GlobalEnv)
+    ## assign("n.items.val", shelter.list[[2]], envir = .GlobalEnv)
+    ## assign("n.items.test", shelter.list[[3]], envir = .GlobalEnv)
 
     shelter.list <- divide(reduced.sur)
     assign("survival.time.train", shelter.list[[1]], envir = .GlobalEnv)
@@ -61,18 +61,16 @@ examine <- function(){
   print(summary(lm(caps/survival.time~.,survival.time))$coefficients)
 }
 
-##TODO If too many features:
-##TODO Select those of low importance from step 2 to remove.
-##TODO Reduce dimensionality using PCA.
+##Irrelevant since the item-finding thing is already determined.
 reduce.num <- function(){
     n.items
 }
 
-##TODO If too many features:
-##TODO Select those of low importance from step 2 to remove.
-##TODO Reduce dimensionality using PCA.
+##DONE If too many features:
+##DONE Select those of low importance from step 2 to remove.
+##DONE Reduce dimensionality using PCA.
 reduce.sur <- function(){
-    survival.time
+    survival.time[,c("e","l","start.level","survival.time")]
 }
 
 MSE <- function(x,y){
@@ -82,28 +80,27 @@ MSE <- function(x,y){
 model <- function(){
     ##TODO Select a number of model types.
     ##TODO Create models of each type, using an appropriate range of hyperparameters and from different features if desired (ie some from PCA, others from natural features)
-    t.num <- n.items.train
-    models.num <- list(lm(n~.,t.num))
+    ## t.num <- n.items.train
+    ## models.num <- list(lm(n~.,t.num))
 
     t.sur <- survival.time.train
     models.sur <- list(lm(survival.time~.,t.sur))
 
     ##DONE? Select best model.
-    error.num <- lapply(models.num,function(x)MSE(predict(x,newdata=n.items.val),
-                                                  n.items.val[,"n"]))
+    ## error.num <- lapply(models.num,function(x)MSE(predict(x,newdata=n.items.val),
+    ##                                               n.items.val[,"n"]))
     error.sur <- lapply(models.sur,function(x)MSE(predict(x,newdata=survival.time.val),
                                                   survival.time.val[,"survival.time"]))
 
-    return(list(models.num[[which.min(error.num)]],
-                models.sur[[which.min(error.sur)]]))
+    return(list(models.sur[[which.min(error.sur)]]))
 }
 
 evaluate <- function(models){
-    model.num <- models[[1]]
-    model.sur <- models[[2]]
+    ## model.num <- models[[1]]
+    ## model.sur <- models[[2]]
+    model.sur <- models[[1]]
 
-    return(list(MSE(predict(model.num,newdata=n.items.test),
-                    n.items.test[,"n"]),
-                MSE(predict(model.sur,newdata=survival.time.test),
+    return(list(summary(model.sur),
+               MSE(predict(model.sur,newdata=survival.time.test),
                     survival.time.test[,"survival.time"])))
 }
