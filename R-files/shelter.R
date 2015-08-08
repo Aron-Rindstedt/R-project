@@ -84,7 +84,12 @@ model <- function(){
     ## models.num <- list(lm(n~.,t.num))
 
     t.sur <- survival.time.train
-    models.sur <- list(lm(survival.time~.,t.sur))
+    models.sur <- list(lm(survival.time~.,t.sur),
+                       lm(survival.time~e+l,t.sur),
+                       lm(survival.time~start.level+e,t.sur),
+                       lm(survival.time~start.level+l,t.sur),
+                       lm(survival.time~start.level,t.sur)
+                       )
 
     ##DONE? Select best model.
     ## error.num <- lapply(models.num,function(x)MSE(predict(x,newdata=n.items.val),
