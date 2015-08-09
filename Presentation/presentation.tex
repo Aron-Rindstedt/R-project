@@ -109,7 +109,7 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
     \item Intercept has p-value $0.96$
     \item Agility has p-value $1.1$
     \end{itemize}
-  \item Caps found clearly determined by Luck (infinitesimal p-value). There's also a base value (intercept). There is also a clear negative correlation with level, hard to tell why this is.
+  \item Caps found clearly determined by Luck (infinitesimal p-value). There's also a base value (intercept). There is also a small but clear negative correlation with level, hard to tell why this is.
   \end{itemize}
 \end{frame}
 
@@ -117,20 +117,53 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \begin{frame}
   \frametitle{Survival: Intro}
   \begin{itemize}
-  \item 
+  \item Scouts face a variety of threats.
+  \item Threats can deal damage both as lost hit points and radiation, too much of either results in death.
+  \item Death is nonpermanent but expensive.
+  \item By calculating the expected time of death for a scout we can choose how long we dare to let our scouts roam.
   \end{itemize}
 \end{frame}
 
 
 \begin{frame}
-  \frametitle{Survival: Relevance}
-  
+  \frametitle{Survival: P-values}
+  \begin{table}[]
+    \centering
+    \caption{Survival time}
+    \label{table:survival.time}
+    \begin{tabular}{l|lllll}
+      &t value&Pr(>|t|)& \\ 
+      \hline
+      (Intercept)    &  -1.7983755246 & 0.074911&. \\ 
+      s              &  2.4166724012  & 0.017339 &*\\
+      p              &  0.9644124169  & 0.336994 &\\
+      e              &  7.6484812878  & 9e-11&*** \\
+      c              &  0.6092526555  & 0.543637& \\
+      i              &  1.9626433352  & 0.052260& .\\
+      a              &  1.0647793211  & 0.289351& \\
+      l              &  -5.9440869849 & 3e-7&*** \\
+      start.level    &  12.3797838804 & <2e-16&*** \\
+      start.damage   &  4.1308435539  & 7e-4&*** \\
+      level.increase &  6.4636998849  & 3e-8 &***\\
+      caps           &  6.2586709017  & 8e-8&*** \\
+      death.damage   &  0.7153117136  & 0.475960&\\
+      \hline
+    \end{tabular}
+  \end{table}
 \end{frame}
 
 
 \begin{frame}
   \frametitle{Survival: Models}
-  
+  \begin{itemize}
+  \item The best p-values among the controllable variables belong to endurance, luck, level, and starting damage.
+  \item Selected models
+    \begin{itemize}
+    \item Linear model over all four
+    \item Polynomial models over one of the above
+    \item Random forest
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 
@@ -149,6 +182,10 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \begin{frame}
   \frametitle{Questions}
   {\Huge Questions}
+  \begin{itemize}
+  \item Questions?
+  \end{itemize}
+
 \end{frame}
 
 \end{document}
