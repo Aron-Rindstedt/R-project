@@ -40,41 +40,42 @@ l&0.042945&0.073570&0.584&0.5600&\\
 \begin{tabular}{l|lllll}
 &Estimate&Std. Error&t value&Pr(>|t|)&\\  
 \hline  
-(Intercept)&83.31893  & 10.72063 &  7.772 &1.01e-11& ***\\
-s &-0.41963  &  0.60547 & -0.693 &   0.490 &   \\
-p& 0.40472  &  0.75732  & 0.534 &   0.594 &   \\
-e & -0.94006  &  0.71014  &-1.324 &   0.189 &   \\
-c&-0.43857  &  0.65616&  -0.668  &  0.506 &   \\
-i& 0.09432  &  0.64471  & 0.146  &  0.884 &   \\
-a  & -0.06736 &   0.61892 & -0.109 &   0.914&    \\
-l &   13.47630  &  0.57793 & 23.318&  < 2e-16& ***\\
-start.level &  -0.72609  &  0.18249 &  -3.979 &   0.000137 & *** \\ 
-start.damage& -1.40079  &  1.40423 & -0.998 &   0.321 &  \\ 
-level.increase & -1.76098 &   2.30341 & -0.765 &   0.446 &  \\ 
-death.damage & 0.41361  & 1.26288 &  0.328  &  0.744&\\
+(Intercept)&83.81787937  & 7.20483461 &  11.63356 &<2e-162& ***\\
+s &-0.21649106  &  0.49987023 & -0.43309 &    0.665802 &   \\
+p&  0.61211724  &  0.67181840  & 0.91113 &   0.364235 &   \\
+e & -0.88781188  &  0.53114306  &-1.67151 &   0.097489 &  . \\
+c&-0.18453188  &  0.59459417&  -0.31035  &  0.756888 &   \\
+i& 0.19836365  &  0.56461809  & 0.35132  &  0.726024 &   \\
+a  & -0.04815488 &   0.54725246 & -0.08799 &   0.930043&    \\
+l &   13.48815469  &  0.50791765 & 26.55579&  <2e-16& ***\\
+start.level &  -0.68088744  &  0.16014426 &  -4.25171 &   0.00004495 & *** \\ 
+start.damage& -1.56703535  &  0.79511334 & -1.97083 &   0.051278 & . \\ 
+level.increase & -3.44085855 &   1.74133402 & -1.97599 &   0.050683 &.  \\ 
+death.damage & 0.30906873  & 0.34846885 &  0.88693  &  0.377067&\\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}
-\label{table:survival.time}
+\begin{table}[]
+\centering
 \caption{Survival time}
+\label{survival.time}
 \begin{tabular}{l|lllll}
-&Estimate&Std. Error&t value& Pr(>|t|)&  \\ 
-\hline 
-(Intercept)&-0.1392181 & 0.4535453 & -0.307& 0.759571 &  \\ 
-s&0.0266912 & 0.0249413 &  1.070& 0.287347 &   \\
-p&0.0051071 & 0.0311739 &  0.164& 0.870227 &   \\
-e&0.1386983 & 0.0292396 &  4.744& 7.66e-06 &***\\
-c&0.0033259 & 0.0270482 &  0.123 &0.902404 & \\  
-i&0.0311700 & 0.0268597 &  1.160& 0.248859 & \\  
-a&-0.0104891 & 0.0256568 & -0.409& 0.683621 &  \\ 
-l&-0.2387383 & 0.0493878 & -4.834& 5.34e-06 &***\\
-start.level& 0.1107089 & 0.0096806 & 11.436& < 2e-16& ***\\
-start.damage&-0.0001271 & 0.0578344 & -0.002& 0.998251&  \\ 
-level.increase&  0.4743358 & 0.1033928 &  4.588& 1.41e-05& ***\\
-caps&0.0030537 & 0.0005477  & 5.576& 2.45e-07 &***\\
-death.damage & 0.1601620 & 0.0524110  & 3.056& 0.002937& ** \\
+&Estimate Std.&Error&t value&Pr(>|t|)& \\ 
+\hline
+(Intercept)    & -0.62884167069 & 0.349672057960 & -1.7983755246 & 0.074911&. \\ 
+s              & 0.05346141178  & 0.022121911003 & 2.4166724012  & 0.017339 &*\\
+p              & 0.02862342249  & 0.029679649482 & 0.9644124169  & 0.336994 &\\
+e              & 0.18123434236  & 0.023695467837 & 7.6484812878  & 9e-11&*** \\
+c              & 0.01608604571  & 0.026402914404 & 0.6092526555  & 0.543637& \\
+i              & 0.05055419848  & 0.025758219832 & 1.9626433352  & 0.052260& .\\
+a              & 0.02581622298  & 0.024245608897 & 1.0647793211  & 0.289351& \\
+l              & -0.26496311935 & 0.044575915531 & -5.9440869849 & 3e-7&*** \\
+start.level    & 0.11302287177  & 0.009129632057 & 12.3797838804 & <2e-16&*** \\
+start.damage   & 0.14667002834  & 0.035506071927 & 4.1308435539  & 7e-4&*** \\
+level.increase & 0.55390718215  & 0.085695065057 & 6.4636998849  & 3e-8 &***\\
+caps           & 0.00310366533  & 0.000495898471 & 6.2586709017  & 8e-8&*** \\
+death.damage   & 0.01143465929  & 0.015985561359 & 0.7153117136  & 0.475960&\\
 \hline
 \end{tabular}
 \end{table}
@@ -86,7 +87,7 @@ In the case of number of items per hour only the intercept had a somewhat signif
 The only three significant predictors were the intercept, Luck, and the starting level.
 
 \subsection{Survival time}
-Significant predictors were \texttt{e}, \texttt{l}, \texttt{start.level}, \texttt{level.increase}, \texttt{caps}, and \texttt{death.damage}. However, since we only were interested in predictors known before sending the dweller out we discarded all but Endurance, Luck, and the level when starting.
+Significant predictors were \texttt{e}, \texttt{l}, \texttt{start.level},\texttt{start.damage}, \texttt{level.increase}, \texttt{caps}. However, since we only were interested in predictors known before sending the dweller out we discarded all but Endurance, Luck, and the level and damage when starting.
 
 \subsection{Irrelevance of PCA}
 Since all of the selected features in the respective models were known to be independent, PCA would not have helped.
