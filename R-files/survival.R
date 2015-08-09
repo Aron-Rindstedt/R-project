@@ -54,33 +54,29 @@ model <- function(){
     training.data <- survival.time.train
     correct <- survival.time.val[,"survival.time"]
     newdata <- survival.time.val
-    errors <- c()
     
     #Linear model
-    cat("Starting on linear model.\n")
+    cat("Starting with linear model.\n")
     lin.mod <- lm(survival.time~e+l+start.level+start.damage,
                   data = training.data)
     lin.pred <- predict(lin.mod,
                         newdata = newdata)
     lin.error <- mse(lin.pred, correct)
-    models <- list(lin.mod)
     errors <- lin.error
     names(errors)[length(errors)] <- "Linear"
     
     #Random forest model
-    cat("Starting on random forest model.\n")
+    cat("Starting with random forest model.\n")
     rf.mod <- randomForest(survival.time~e+l+start.level+start.damage,
                            training.data)
     rf.pred <- predict(rf.mod,
                        newdata=newdata)
     rf.error <- mse (rf.pred, correct)
-    models <- c(models, rf.mod)
     errors <- c(errors, rf.error)
     names(errors)[length(errors)] <- "Random forest"
     
-    #
-    
     #Compare the models
+    models <- list(lin.mod, rf.mod)
     cat("Model creation done!\n===================\n\n")
     new.order <- order(errors)
     errors <- errors[new.order]
