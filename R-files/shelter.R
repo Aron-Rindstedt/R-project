@@ -1,7 +1,7 @@
 run <- function(){
     init()
-    model <- model()
-    return(evaluate(model))
+    chosen.model <- model()
+    return(evaluate(chosen.model))
 }
 
 divide <- function(x){
@@ -45,40 +45,38 @@ init <- function() {
     assign("survival.time.test", shelter.list[[3]], envir = .GlobalEnv)
 }
 
-# Examine importance of features
-
-
-MSE <- function(x,y){
+mse <- function(x,y){
     mean((x-y)^2)
 }
 
 model <- function(){
     t.sur <- survival.time.train
-    #newdata <-
+    correct <- survival.time.val[,"survival.time"]
     
     #Linear model
     cat("Starting on linear model.\n")
-    lin.mod <- lm(survival.time~e+l+start.level,t.sur)
+    lin.mod <- lm(survival.time~e+l+start.level+start.damage, data = t.sur)
     lin.pred <- predict(lin.mod, newdata = survival.time.val)
+    lin.error <- mse(lin.pred, correct)
     
     #Random forest model
     cat("Starting on random forest model.\n")
-    rf.mod <- randomForest(survival.time~e+l+start.level,t.sur)
+    #rf.mod <- randomForest(survival.time~e+l+start.level+start.damage,t.sur)
     #rf.pred <- predict(rf,newdata=newdata)
     #TODO
     
     #Compare the models
-    models.sur <- list(lin.mod)
+    models <- list(lin.mod, lin.mod)
+    errors <- c(lin.error, lin.error)
   
-    correct <- survival.time.val[,"survival.time"]
-    errors <- lapply(models.sur,function(x)MSE(predict(x,newdata=survival.time.val),
-                                               correct))
-
-    return(models.sur[[which.min(errors)]])
+    cat("Training MS error:",min(errors),"\n")
+    return(models[[which.min(errors)]])
 }
 
 evaluate <- function(model){
+  pred <- predict(model,newdata=survival.time.test)
+  correct <- survival.time.test[,"survival.time"]
     return(list(summary(model),
-               MSE(predict(model,newdata=survival.time.test),
-                    survival.time.test[,"survival.time"])))
+               mse(pred,
+                    correct)))
 }
