@@ -1,7 +1,8 @@
 run <- function(){
     init()
     chosen.model <- model()
-    return(evaluate(chosen.model))
+    . <- readline("Press [ENTER] to evaluate chosen model.")
+    evaluate(chosen.model)
 }
 
 divide <- function(x){
@@ -50,27 +51,50 @@ mse <- function(x,y){
 }
 
 model <- function(){
-    t.sur <- survival.time.train
+    training.data <- survival.time.train
     correct <- survival.time.val[,"survival.time"]
+    newdata <- survival.time.val
+    errors <- c()
     
     #Linear model
     cat("Starting on linear model.\n")
-    lin.mod <- lm(survival.time~e+l+start.level+start.damage, data = t.sur)
-    lin.pred <- predict(lin.mod, newdata = survival.time.val)
+    lin.mod <- lm(survival.time~e+l+start.level+start.damage,
+                  data = training.data)
+    lin.pred <- predict(lin.mod,
+                        newdata = newdata)
     lin.error <- mse(lin.pred, correct)
+    models <- list(lin.mod)
+    errors <- lin.error
+    names(errors)[length(errors)] <- "Linear"
     
     #Random forest model
     cat("Starting on random forest model.\n")
-    #rf.mod <- randomForest(survival.time~e+l+start.level+start.damage,t.sur)
-    #rf.pred <- predict(rf,newdata=newdata)
-    #TODO
+    rf.mod <- randomForest(survival.time~e+l+start.level+start.damage,
+                           training.data)
+    rf.pred <- predict(rf.mod,
+                       newdata=newdata)
+    rf.error <- mse (rf.pred, correct)
+    models <- c(models, rf.mod)
+    errors <- c(errors, rf.error)
+    names(errors)[length(errors)] <- "Random forest"
+    
+    #
     
     #Compare the models
-    models <- list(lin.mod, lin.mod)
-    errors <- c(lin.error, lin.error)
-  
-    cat("Training MS error:",min(errors),"\n")
-    return(models[[which.min(errors)]])
+    cat("Model creation done!\n===================\n\n")
+    new.order <- order(errors)
+    errors <- errors[new.order]
+    models <- models[new.order]
+    cat("Validation MS errors:\n")
+    for (i in 1:length(errors))
+      cat(i,":",names(errors)[i],":",errors[i],"\n")
+    cat("End of validation\n===================\n\n")
+    
+    min.error.ind <- which.min(errors)
+    
+    cat("Chosen model:", names(errors)[min.error.ind])
+    
+    return(models[[min.error.ind]])
 }
 
 evaluate <- function(model){
