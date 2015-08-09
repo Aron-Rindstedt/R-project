@@ -24,12 +24,7 @@ init <- function() {
       install.packages("randomForest")
     require('randomForest')
     
-    # Import data files
-    if (!exists("n.items")){
-        cat("Please select the shelter_number data csv file.\n")
-        n.items <- read.csv(file.choose(), header=T, sep=";")
-        assign("n.items", n.items, envir = .GlobalEnv)
-    }
+    # Import data file
     if (!exists("survival.time")){
       cat("Please select the shelter_survival data csv file.\n")
       survival.time <- read.csv(file.choose(), header=T, sep=";")
@@ -46,8 +41,10 @@ init <- function() {
     assign("survival.time.test", shelter.list[[3]], envir = .GlobalEnv)
 }
 
-mse <- function(x,y){
-    mean((x-y)^2)
+msle <- function(x,y){
+    #Returns the mean of square difference between logs
+    #we want to penalize
+    mean((log(x)-log(y))^2)
 }
 
 model <- function(){
@@ -61,9 +58,18 @@ model <- function(){
                   data = training.data)
     lin.pred <- predict(lin.mod,
                         newdata = newdata)
-    lin.error <- mse(lin.pred, correct)
+    lin.error <- msle(lin.pred, correct)
     errors <- lin.error
     names(errors)[length(errors)] <- "Linear"
+    
+    #Polynomials over e
+    #TODO
+    #Polynomials over l
+    #TODO
+    #Polynomials over start.level
+    #TODO
+    #Polynomials over start.damage
+    #TODO
     
     #Random forest model
     cat("Starting with random forest model.\n")
@@ -71,7 +77,7 @@ model <- function(){
                            training.data)
     rf.pred <- predict(rf.mod,
                        newdata=newdata)
-    rf.error <- mse (rf.pred, correct)
+    rf.error <- msle (rf.pred, correct)
     errors <- c(errors, rf.error)
     names(errors)[length(errors)] <- "Random forest"
     
@@ -81,7 +87,7 @@ model <- function(){
     new.order <- order(errors)
     errors <- errors[new.order]
     models <- models[new.order]
-    cat("Validation MS errors:\n")
+    cat("Validation mean squared logarithmic errors:\n")
     for (i in 1:length(errors))
       cat(i,":",names(errors)[i],":",errors[i],"\n")
     cat("End of validation\n===================\n\n")
@@ -97,6 +103,6 @@ evaluate <- function(model){
   pred <- predict(model,newdata=survival.time.test)
   correct <- survival.time.test[,"survival.time"]
     return(list(summary(model),
-               mse(pred,
+               msle(pred,
                     correct)))
 }
