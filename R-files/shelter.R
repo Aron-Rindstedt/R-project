@@ -1,21 +1,7 @@
 run <- function(){
     init()
-    coef <- examine()
-    ## reduced.num <- reduce.num()
-    reduced.sur <- reduce.sur()
-    
-    ## shelter.list <- divide(reduced.num)
-    ## assign("n.items.train", shelter.list[[1]], envir = .GlobalEnv)
-    ## assign("n.items.val", shelter.list[[2]], envir = .GlobalEnv)
-    ## assign("n.items.test", shelter.list[[3]], envir = .GlobalEnv)
-
-    shelter.list <- divide(reduced.sur)
-    assign("survival.time.train", shelter.list[[1]], envir = .GlobalEnv)
-    assign("survival.time.val", shelter.list[[2]], envir = .GlobalEnv)
-    assign("survival.time.test", shelter.list[[3]], envir = .GlobalEnv)
-    
-    models <- model()
-    return(evaluate(models))
+    model <- model()
+    return(evaluate(model))
 }
 
 divide <- function(x){
@@ -31,7 +17,11 @@ divide <- function(x){
 }
 
 init <- function() {
+    # Install and load packages
     packages <- installed.packages()
+    if (!"randomForest" %in% packages[,1])
+      install.packages("randomForest")
+    require('randomForest')
     
     # Import data files
     if (!exists("n.items")){
@@ -45,67 +35,50 @@ init <- function() {
       survival.time <- subset(survival.time, select = -c(name))
       survival.time$death.level <- survival.time$death.level - survival.time$start.level
       colnames(survival.time)[11] <- "level.increase"
+      
       assign("survival.time", survival.time, envir = .GlobalEnv)
     }
+    
+    shelter.list <- divide(survival.time)
+    assign("survival.time.train", shelter.list[[1]], envir = .GlobalEnv)
+    assign("survival.time.val", shelter.list[[2]], envir = .GlobalEnv)
+    assign("survival.time.test", shelter.list[[3]], envir = .GlobalEnv)
 }
 
-# Examine importance of features (even if you will not discard any).
-examine <- function(){
-  cat("\n\nNumber of items/h vs. dmg and SPECIAL stats:\n")
-  print(summary(lm(n/time~.,n.items))$coefficients)
-  cat("\n\nSurvival time vs. dmg and SPECIAL stats:\n")
-  print(summary(lm(survival.time~.,survival.time))$coefficients)
-  cat("\n\nCaps vs. time, dmg and SPECIAL stats:\n")
-  print(summary(lm(caps~.,survival.time))$coefficients)
-  cat("\n\nCaps/hour vs. dmg and SPECIAL stats:\n")
-  print(summary(lm(caps/survival.time~.,survival.time))$coefficients)
-}
+# Examine importance of features
 
-##Irrelevant since the item-finding thing is already determined.
-reduce.num <- function(){
-    n.items
-}
-
-##DONE If too many features:
-##DONE Select those of low importance from step 2 to remove.
-##DONE Reduce dimensionality using PCA.
-reduce.sur <- function(){
-    survival.time[,c("e","l","start.level","survival.time")]
-}
 
 MSE <- function(x,y){
     mean((x-y)^2)
 }
 
 model <- function(){
-    ##TODO Select a number of model types.
-    ##TODO Create models of each type, using an appropriate range of hyperparameters and from different features if desired (ie some from PCA, others from natural features)
-    ## t.num <- n.items.train
-    ## models.num <- list(lm(n~.,t.num))
-
     t.sur <- survival.time.train
-    models.sur <- list(lm(survival.time~.,t.sur),
-                       lm(survival.time~e+l,t.sur),
-                       lm(survival.time~start.level+e,t.sur),
-                       lm(survival.time~start.level+l,t.sur),
-                       lm(survival.time~start.level,t.sur)
-                       )
+    #newdata <-
+    
+    #Linear model
+    cat("Starting on linear model.\n")
+    lin.mod <- lm(survival.time~e+l+start.level,t.sur)
+    lin.pred <- predict(lin.mod, newdata = survival.time.val)
+    
+    #Random forest model
+    cat("Starting on random forest model.\n")
+    rf.mod <- randomForest(survival.time~e+l+start.level,t.sur)
+    #rf.pred <- predict(rf,newdata=newdata)
+    #TODO
+    
+    #Compare the models
+    models.sur <- list(lin.mod)
+  
+    correct <- survival.time.val[,"survival.time"]
+    errors <- lapply(models.sur,function(x)MSE(predict(x,newdata=survival.time.val),
+                                               correct))
 
-    ##DONE? Select best model.
-    ## error.num <- lapply(models.num,function(x)MSE(predict(x,newdata=n.items.val),
-    ##                                               n.items.val[,"n"]))
-    error.sur <- lapply(models.sur,function(x)MSE(predict(x,newdata=survival.time.val),
-                                                  survival.time.val[,"survival.time"]))
-
-    return(list(models.sur[[which.min(error.sur)]]))
+    return(models.sur[[which.min(errors)]])
 }
 
-evaluate <- function(models){
-    ## model.num <- models[[1]]
-    ## model.sur <- models[[2]]
-    model.sur <- models[[1]]
-
-    return(list(summary(model.sur),
-               MSE(predict(model.sur,newdata=survival.time.test),
+evaluate <- function(model){
+    return(list(summary(model),
+               MSE(predict(model,newdata=survival.time.test),
                     survival.time.test[,"survival.time"])))
 }
