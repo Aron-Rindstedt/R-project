@@ -202,13 +202,49 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 
 \section{Survival: Performance}
 \begin{frame}
-  
-  
+  \begin{itemize}
+  \item Since we only have limited data, error values vary, but the order is largely consistent.
+  \item We used squared logarithmic errors.
+    \begin{itemize}
+    \item Linear : 0.02197829
+    \item E-squared : 0.02410209
+    \item L-squared : 0.02410209
+    \item Level-squared : 0.02410209
+    \item E-cubed : 0.02469169
+    \item L-cubed : 0.02469169
+    \item Level-cubed : 0.02469169
+    \item Random forest : 0.04621143
+    \end{itemize}
+  \end{itemize}
 \end{frame}
+
+
+\begin{frame}
+  \begin{itemize}
+  \item Linear data summary
+    \begin{table}
+      \centering
+      \caption{Coefficients}
+      \begin{tabular}{l|lllll}
+        &Estimate& Std. Error& t value& Pr(>|t|)    \\
+        (Intercept)  &-0.666776&   0.423767&  -1.573& 0.120256&    \\
+        e            & 0.152480&   0.042116&   3.621& 0.000561& ***\\
+        l            & 0.067931&   0.041358&   1.642& 0.105105&    \\
+        start.level  & 0.144418&   0.009735&  14.834&  < 2e-16& ***\\
+        start.damage & 0.374476&   0.056063&   6.680& 5.33e-09& ***\\
+      \end{tabular}
+    \end{table}
+  \end{itemize}
+\end{frame}
+
 
 \section{Survival: Conclusions}
 \begin{frame}
-  
+  \begin{itemize}
+  \item A rough guess for the survival time of a given scout appears to be $(0.15(e+level)+0.4\cdot damage)$ hours.
+  \item More research might be useful, especially into why starting damage apparently increases survival time.
+  \item 
+  \end{itemize}
 \end{frame}
 
 \section{Questions}

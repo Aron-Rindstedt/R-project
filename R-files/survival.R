@@ -162,7 +162,7 @@ model <- function(){
     
     min.error.ind <- which.min(errors)
     
-    cat("Chosen model:", names(errors)[min.error.ind])
+    cat("Chosen model:", names(errors)[min.error.ind],"\n")
     
     return(models[[min.error.ind]])
 }
@@ -170,7 +170,7 @@ model <- function(){
 evaluate <- function(model){
   pred <- predict(model,newdata=survival.time.test)
   correct <- survival.time.test[,"survival.time"]
-  cat("Estimated MSLE for the selected model on test data:",msle(pred,correct))
+  cat("Estimated MSLE for the selected model on test data:",msle(pred,correct),"\n")
   . <- readline("Press [ENTER] to see the summary of the selected model.")
   print(summary(model))
 }
