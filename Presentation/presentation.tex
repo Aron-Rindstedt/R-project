@@ -6,6 +6,8 @@
 \usepackage{mathtools}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{float}
+
 
 \begin{document}
 \begin{frame}
@@ -24,11 +26,15 @@
   \end{itemize}
 \end{frame}
 
-
-\begin{frame}
-  \frametitle{SPECIAL}
-
-{\Large \underline{Seven stats determine success}}
+\section{Stats}
+\begin{frame}{Character stats}
+  \begin{minipage}{.45\textwidth}
+  \includegraphics[width=\textwidth]{stats}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{.45\textwidth}
+  \begin{itemize}
+  \item SPECIAL stats\\($\in 1..10$ + bonus)
   \begin{itemize}
   \item Strength
   \item Perception 
@@ -36,8 +42,20 @@
   \item Charisma 
   \item Intelligence 
   \item Agility 
-  \item Luck 
+  \item Luck
+  \item Bonus from armour (blue)
   \end{itemize}
+  \item Level (assumed to be discrete)
+  \item Happiness (assumed to be insignificant)
+  \item Weapon damage
+  
+  
+
+  \end{itemize}
+  \end{minipage}
+  
+
+  
 \end{frame}
 
 
