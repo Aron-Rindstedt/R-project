@@ -1,4 +1,6 @@
 \documentclass{beamer}
+\usetheme{Boadilla}
+\usecolortheme{beaver}
 
 \usepackage[utf8]{inputenc}
 \usepackage{ae,aecompl}
@@ -8,13 +10,24 @@
 \usepackage{graphicx}
 \usepackage{float}
 
+%Gör att alla slides har en frametitle, default \relax
+\makeatletter
+  \CheckCommand*\beamer@checkframetitle{\@ifnextchar\bgroup\beamer@inlineframetitle{}}
+  \renewcommand*\beamer@checkframetitle{\global\let\beamer@frametitle\relax\@ifnextchar\bgroup\beamer@inlineframetitle{}}
+\makeatother
+
+%Gör sectionrubrik till frametitle
+\addtobeamertemplate{frametitle}{\let\insertframetitle\insertsectionhead}{}
+
+\title{Fallout: Shelter}
+\subtitle{A Game Mechanics Analysis}
+\author{Aron Rindstedt \and Max Block}
+\date{August 12, 2015}
 
 \begin{document}
-\begin{frame}
-  \frametitle{Fallout: Shelter}
-  \includegraphics[width=10cm]{Fallout_Shelter_gameplay}
-\end{frame}
+\maketitle
 
+\section{Introduction}
 \begin{frame}
   \frametitle{Fallout: Shelter}
   \begin{itemize}
@@ -26,8 +39,8 @@
   \end{itemize}
 \end{frame}
 
-\section{Stats}
-\begin{frame}{Character stats}
+\section{Character Stats}
+\begin{frame}
   \begin{minipage}{.45\textwidth}
   \includegraphics[width=\textwidth]{stats}
   \end{minipage}
@@ -48,19 +61,13 @@
   \item Level (assumed to be discrete)
   \item Happiness (assumed to be insignificant)
   \item Weapon damage
-  
-  
-
   \end{itemize}
   \end{minipage}
-  
-
-  
 \end{frame}
 
 
+\section{Goal}
 \begin{frame}
-  \frametitle{Retrieval: Intro}
   \begin{itemize}
   \item We wanted to know what determined how fast a scout found items and bottlecaps
   \item We performed a linear analysis and looked at the p-values
@@ -69,6 +76,7 @@
 
 \end{frame}
 
+\section{Items Per Hour}
 \begin{frame}
   \frametitle{Retrieval: Items}
   \begin{table}
@@ -92,7 +100,11 @@ l&0.042945&0.073570&0.584&0.5600&\\
 \end{table}
 \end{frame}
 
+\begin{frame}
+\includegraphics[width=\textwidth]{nitems.png}
+\end{frame}
 
+\section{Caps Per Hour}
 \begin{frame}
   \frametitle{Retrieval: Bottlecaps}
   \begin{table}
@@ -101,7 +113,7 @@ l&0.042945&0.073570&0.584&0.5600&\\
 \begin{tabular}{l|lllll}
 &Estimate&t value&Pr(>|t|)&\\  
 \hline  
-(Intercept)&83.81787937  &  11.63356 &<2e-162& ***\\
+(Intercept)&83.81787937  &  11.63356 &<2e-16& ***\\
 s &-0.21649106   & -0.43309 &    0.665802 &   \\
 p&  0.61211724    & 0.91113 &   0.364235 &   \\
 e & -0.88781188    &-1.67151 &   0.097489 &  . \\
@@ -118,20 +130,24 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \end{table}
 \end{frame}
 
-
+\section{Conclusions}
 \begin{frame}
   \frametitle{Retrieval: Conclusions}
   \begin{itemize}
   \item Difficult to determine what affects items found. Two p-values stand out, but are still bad.
     \begin{itemize}
-    \item Intercept has p-value $0.96$
-    \item Agility has p-value $1.1$
+    \item Intercept has p-value $0.096$
+    \item Agility has p-value $0.11$
+    \item<2-> Probably constant, but we need more data to be sure.
     \end{itemize}
-  \item Caps found clearly determined by Luck (infinitesimal p-value). There's also a base value (intercept). There is also a small but clear negative correlation with level, hard to tell why this is.
+  \item<3-> Caps found determined by Luck (p-value < machine $\varepsilon$). There's also a base value (intercept).
+  \begin{itemize}
+  \item Also a small but clearly negative correlation with level, hard to tell why this is.
+  \end{itemize}
   \end{itemize}
 \end{frame}
 
-
+\section{Survival}
 \begin{frame}
   \frametitle{Survival: Intro}
   \begin{itemize}
@@ -142,7 +158,7 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \end{itemize}
 \end{frame}
 
-
+\section{Summary: Survival Time}
 \begin{frame}
   \frametitle{Survival: P-values}
   \begin{table}[]
@@ -170,7 +186,7 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \end{table}
 \end{frame}
 
-
+\section{Survival: Tested Models}
 \begin{frame}
   \frametitle{Survival: Models}
   \begin{itemize}
@@ -178,27 +194,26 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \item Selected models
     \begin{itemize}
     \item Linear model over all four
-    \item Polynomial models over one of the above
+    \item Higher order polynomial models over (exactly) one predictor
     \item Random forest
     \end{itemize}
   \end{itemize}
 \end{frame}
 
-
+\section{Survival: Performance}
 \begin{frame}
-  \frametitle{Survival: Performance}
+  
   
 \end{frame}
 
-
+\section{Survival: Conclusions}
 \begin{frame}
-  \frametitle{Survival: Conclusions}
   
 \end{frame}
 
-
+\section{Questions}
 \begin{frame}
-  \frametitle{Questions}
+  
   {\Huge Questions}
   \begin{itemize}
   \item Questions?
