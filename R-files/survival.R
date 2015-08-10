@@ -43,8 +43,42 @@ init <- function() {
 
 msle <- function(x,y){
     #Returns the mean of square difference between logs
-    #we want to penalize
+    #we want to penalize errors for small values
     mean((log(x)-log(y))^2)
+}
+
+polyfit <- function(var, deg) {
+  training.data <- survival.time.train
+  newdata <- survival.time.val
+  correct <- survival.time.val[,"survival.time"]
+  
+  deg.e <- 1
+  deg.l <- 1
+  deg.level <- 1
+  if (var == "e")
+    deg.e <- deg
+  if (var == "l")
+    deg.e <- deg
+  if (var == "level")
+    deg.e <- deg
+  
+  model <- lm(survival.time~poly(e,deg.e)+poly(l,deg.l)+poly(start.level,deg.level)+start.damage,
+              data = training.data)
+  pred <- predict(model, newdata = newdata)
+  error <- msle(pred, correct)
+  return(list(model,error))
+}
+
+polyfit.e <- function(deg) {
+  polyfit("e", deg)
+}
+
+polyfit.l <- function(deg) {
+  polyfit("l", deg)
+}
+
+polyfit.level <- function(deg) {
+  polyfit("level", deg)
 }
 
 model <- function(){
@@ -62,14 +96,6 @@ model <- function(){
     errors <- lin.error
     names(errors)[length(errors)] <- "Linear"
     
-    #Polynomials over e
-    #TODO
-    #Polynomials over l
-    #TODO
-    #Polynomials over start.level
-    #TODO
-    #Polynomials over start.damage
-    #TODO
     
     #Random forest model
     cat("Starting with random forest model.\n")
@@ -81,8 +107,50 @@ model <- function(){
     errors <- c(errors, rf.error)
     names(errors)[length(errors)] <- "Random forest"
     
+    #Polynomials over e
+    cat("Starting with polynomials over E.\n")
+    e2.fit <- polyfit.e(2)
+    e2.mod <- e2.fit[[1]]
+    e2.error <- e2.fit[[2]]
+    e3.fit <- polyfit.e(3)
+    e3.mod <- e3.fit[[1]]
+    e3.error <- e3.fit[[2]]
+    errors <- c(errors, e2.error)
+    names(errors)[length(errors)] <- "E-squared"
+    errors <- c(errors, e3.error)
+    names(errors)[length(errors)] <- "E-cubed"
+    
+    #Polynomials over l
+    cat("Starting with polynomials over L.\n")
+    l2.fit <- polyfit.l(2)
+    l2.mod <- l2.fit[[1]]
+    l2.error <- l2.fit[[2]]
+    l3.fit <- polyfit.l(3)
+    l3.mod <- l3.fit[[1]]
+    l3.error <- l3.fit[[2]]
+    errors <- c(errors, l2.error)
+    names(errors)[length(errors)] <- "L-squared"
+    errors <- c(errors, l3.error)
+    names(errors)[length(errors)] <- "L-cubed"
+    
+    #Polynomials over start.level
+    cat("Starting with polynomials over start.level.\n")
+    level2.fit <- polyfit.level(2)
+    level2.mod <- level2.fit[[1]]
+    level2.error <- level2.fit[[2]]
+    level3.fit <- polyfit.level(3)
+    level3.mod <- level3.fit[[1]]
+    level3.error <- level3.fit[[2]]
+    errors <- c(errors, level2.error)
+    names(errors)[length(errors)] <- "Level-squared"
+    errors <- c(errors, level3.error)
+    names(errors)[length(errors)] <- "Level-cubed"
+    
     #Compare the models
-    models <- list(lin.mod, rf.mod)
+    models <- list(lin.mod, rf.mod, 
+                   e2.mod, e3.mod, 
+                   l2.mod, l3.mod,
+                   level2.mod, level3.mod)
     cat("Model creation done!\n===================\n\n")
     new.order <- order(errors)
     errors <- errors[new.order]
