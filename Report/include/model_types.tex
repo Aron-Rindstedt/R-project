@@ -1,1 +1,12 @@
 %Explain model types used and hyperparameters involved in learning these models. Also explain the feature sets used for different models if applicable
+\subsection{Caps per hour}
+When plotting the Luck, starting level on the X- and Y-axes and caps per hour on Z it was apparent that this relationship was probably linear; By turning the 3D-plot one could almost see a plane regression surface. However, one can also see the signs of heteroscedasticity so we compared the OLS model to gamma family error distribution models which were linear and quadratic, respectively, w.r.t. Luck. 
+
+\subsection{Survival time}
+We decided to test the following models:
+\begin{itemize}
+\item A linear model.
+\item Models quadratic w.r.t. exactly one of E, L and start level.
+\item Models cubic w.r.t. exactly one of E, L and start level.
+\item A random forest model.
+\end{itemize}

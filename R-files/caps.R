@@ -1,7 +1,28 @@
 run <- function() {
-  cat("The aim for this function is to make it obvious that a linear model must be the best fit.\n")
   init()
-  model <- lm(caps/survival.time ~l+start.level, data=rbind(train,val))
+  
+  plot3d(survival.time$l, survival.time$start.level, survival.time$caps/survival.time$survival.time,
+         xlab = "Luck", ylab = "Level", zlab = "Caps")
+  cat("If we look at the plot, we see the signs of possible heteroscedacitity.",
+      "\nThus, we compare a linear model to generalized models with Gamma family error distribution.",
+      "\nWe are comparing 1st order and 2nd order polynomials w.r.t. luck.\n")
+  . <- readline("Press [ENTER] to create the model and plot test points and regression surface.")
+  
+  lin.model <- lm(caps/survival.time ~l+start.level, data=train)
+  lin.g.model <- glm(caps/survival.time ~l+start.level, family=Gamma, data=train)
+  quad.g.model <- glm(caps/survival.time ~ poly(l,2) + start.level, family=Gamma, data=train)
+  
+  lin.error <-  mse(predict(lin.model, newdata = val), val$caps/val$survival.time)
+  lin.g.error <-  mse(predict(lin.g.model, newdata = val), val$caps/val$survival.time)
+  quad.g.error <-mse(predict(quad.g.model, newdata = val), val$caps/val$survival.time)
+  
+  cat("MSEs:",
+      "\nLinear model:",lin.error,
+      "\nGeneral linear model:", lin.g.error,
+      "\nQuadratic general linear model:", quad.g.error,
+      "\nThe ordinary linear model performs best.")
+  
+  model <- lin.model
   
   new.l <- seq(1:15)
   new.level <- seq(1:50)
@@ -11,14 +32,15 @@ run <- function() {
     newdata <- cbind(newdata, rep(c,15))
     newdata <- data.frame(newdata) #repetera luck=1:15 och level=r
     names(newdata) <- c("l","start.level")
-    pred[,c] <- predict(model, newdata = newdata)
+    pred[,c] <- predict(model, newdata = newdata, type="response")
   }
   plot3d(test$l, test$start.level, test$caps/test$survival.time,
          xlab = "Luck", ylab = "Level", zlab = "Caps")
   surface3d(new.l, new.level, pred, alpha=.5)
-  cat("If we look at the plot, we see the signs of heteroscedacitity. Since we have not learned how to deal with it in the course, we have not dealt with it.")
-  cat("The estimated formula is:\nCaps/h =",
-      model$coefficients[1],"+",model$coefficients[2],"* l","+",model$coefficients[3]," * start.level\n")
+}
+
+mse <- function(x,y){
+  mean(x-y)^2
 }
 
 divide <- function(x){
