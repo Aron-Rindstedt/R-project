@@ -1,1 +1,44 @@
 %Show model performances on validation data set, and specify which was the selected model.
+\subsection{Caps per hour}
+In table \ref{table:MSE.caps}, one can see the mean squared errors when testing the corresponding model on a validation set. Obviously, the linear model performed best.
+\begin{table}
+\caption{MSEs for Caps/h models}
+\label{table:MSE.caps}
+\centering
+\begin{tabular}{l|l}
+\hline
+\textbf{Model}&\textbf{MSE}\\
+\hline
+Linear&4.224231\\
+Generalized linear model&14856.01\\
+Quadratic generalized linear model&14855.91\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\subsection{Survival time}
+Since we wanted to penalize the models deviating by a high percentage\footnote{It is worse being $\pm$1 hour when survival time is 2 hours than 10 hours.}, we used the mean squared logarithmic error\footnote{I.e. $mean((log(x)-log(y))^2)$.} when comparing models. This is a problem since we have not used this error function when training the models.\\
+
+Table \ref{table:MSLE.survival} contains the error data for the models for one of the runs. The data is sorted by increasing error.\\
+
+When looking at the summaries for the different polynomial models, we see signs of overfitting since the higher order terms have unsignificant p-values. Hence, we select the fully linear model.
+\begin{table}
+\caption{Example MSLEs for survival time models}
+\label{table:MSLE.survival}
+\centering
+\begin{tabular}{l l|l}
+\hline
+&\textbf{Model}&\textbf{MSLE}\\
+\hline
+1 & Linear & 0.02357269 \\
+2 & E-cubed & 0.02425712 \\
+3 & L-cubed & 0.02425712 \\
+4 & Level-cubed & 0.02425712 \\
+5 & E-squared & 0.02436156 \\
+6 & L-squared & 0.02436156 \\
+7 & Level-squared & 0.02436156 \\
+8 & Random forest & 0.05437296\\
+\hline
+\end{tabular}
+\end{table}
