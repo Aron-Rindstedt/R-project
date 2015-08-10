@@ -170,7 +170,7 @@ model <- function(){
 evaluate <- function(model){
   pred <- predict(model,newdata=survival.time.test)
   correct <- survival.time.test[,"survival.time"]
-    return(list(summary(model),
-               msle(pred,
-                    correct)))
+  cat("Estimated MSLE for the selected model on test data:",msle(pred,correct))
+  . <- readline("Press [ENTER] to see the summary of the selected model.")
+  print(summary(model))
 }
