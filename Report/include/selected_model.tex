@@ -1,1 +1,18 @@
 %Explain the performance of the selected model on the test data, plus extra analysis if applicable. Discuss whether performace was sufficient for task.
+\subsection{Caps per hour}
+The selected linear model can roughly be described using:
+\begin{equation}
+C=65+12L-0.45\ell
+\end{equation}
+where $C$ is the number of caps per hour, $L$ is the dweller's Luck and $\ell$ is the starting level.\\
+
+Mean squared error for the selected model on test data was 4.592009. Since $1\leq L\leq 10$ and $1\leq\ell\leq50$ we deduce $54.5\leq C\leq 150.5$ which means that the error is well within our demands.\\
+
+It is a strange mechanic giving a penalty on the number of caps for high-leveled characters. We believe that the following reasons for the negative level implication are plausible:
+\begin{itemize}
+\item There could be some kind of extra share-out for a dweller that has just leveled up. Higher level dwellers are less likely to level up, due to the fact that the experience needed for each consecutive level increases.
+\item There could be a very high chance for a share-out in the beginning of the exploration. Sincer high-level dwellers will in general survive longer, the average caps finding rate will descend as the time increases. 
+\end{itemize}
+
+\subsection{Survival time}
+Estimated MSLE for the selected model on test data is 0.03785731. This corresponds to an error of around 1:10h in the average case, which is reasonable since the average survival time in the test data is 6h. In order to get a higher precision, we probably need more data.

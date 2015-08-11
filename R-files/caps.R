@@ -20,7 +20,7 @@ run <- function() {
       "\nLinear model:",lin.error,
       "\nGeneral linear model:", lin.g.error,
       "\nQuadratic general linear model:", quad.g.error,
-      "\nThe ordinary linear model performs best.")
+      "\nThe ordinary linear model performs best.\n")
   
   model <- lin.model
   
@@ -37,6 +37,9 @@ run <- function() {
   plot3d(test$l, test$start.level, test$caps/test$survival.time,
          xlab = "Luck", ylab = "Level", zlab = "Caps")
   surface3d(new.l, new.level, pred, alpha=.5)
+  print(summary(model))
+  test.pred <- predict(model, newdata = test)
+  cat("Model MS error on test data:\n",mse(test.pred, test$caps/test$survival.time))
 }
 
 mse <- function(x,y){

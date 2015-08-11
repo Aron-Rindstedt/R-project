@@ -58,9 +58,9 @@ polyfit <- function(var, deg) {
   if (var == "e")
     deg.e <- deg
   if (var == "l")
-    deg.e <- deg
+    deg.l <- deg
   if (var == "level")
-    deg.e <- deg
+    deg.level <- deg
   
   model <- lm(survival.time~poly(e,deg.e)+poly(l,deg.l)+poly(start.level,deg.level)+start.damage,
               data = training.data)
@@ -156,8 +156,10 @@ model <- function(){
     errors <- errors[new.order]
     models <- models[new.order]
     cat("Validation mean squared logarithmic errors:\n")
+    cat("&\\textbf{Model}&\\textbf{MSLE}\\\\\\hline\n")
     for (i in 1:length(errors))
-      cat(i,":",names(errors)[i],":",errors[i],"\n")
+      cat(i,"&",names(errors)[i],"&",errors[i],"\\\\\n")
+    cat("\\hline\n")
     cat("End of validation\n===================\n\n")
     
     min.error.ind <- which.min(errors)

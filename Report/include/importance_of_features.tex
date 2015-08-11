@@ -84,7 +84,7 @@ death.damage   & 0.01143465929  & 0.015985561359 & 0.7153117136  & 0.475960&\\
 In the case of number of items per hour only the intercept had a somewhat significant value. We deduced that all dwellers have the same chance of finding items.
 
 \subsection{Caps per hour}
-The only three significant predictors were the intercept, Luck, and the starting level.
+The only three significant predictors were the intercept, Luck, and the starting level. However, all three had extremely sure p-values; the intercept and Luck are at machine epsilon for the running 64-bit version of R.
 
 \subsection{Survival time}
 Significant predictors were \texttt{e}, \texttt{l}, \texttt{start.level},\texttt{start.damage}, \texttt{level.increase}, \texttt{caps}. However, since we only were interested in predictors known before sending the dweller out we discarded all but Endurance, Luck, and the level and damage when starting.
