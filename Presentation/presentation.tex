@@ -30,6 +30,8 @@
 \section{Introduction}
 \begin{frame}
   \frametitle{Fallout: Shelter}
+  \centering
+  \includegraphics[scale=.3]{Fallout_Shelter_gameplay}
   \begin{itemize}
   \item Postapocalyptic mobile game
   \item You control a shelter full of dwellers
@@ -41,10 +43,6 @@
 
 \section{Character Stats}
 \begin{frame}
-  \begin{minipage}{.45\textwidth}
-  \includegraphics[width=\textwidth]{stats}
-  \end{minipage}
-  \hfill
   \begin{minipage}{.45\textwidth}
   \begin{itemize}
   \item SPECIAL stats\\($\in 1..10$ + bonus)
@@ -63,10 +61,14 @@
   \item Weapon damage
   \end{itemize}
   \end{minipage}
+  \hfill
+  \begin{minipage}{.45\textwidth}
+  \includegraphics[width=\textwidth]{stats}
+  \end{minipage}
 \end{frame}
 
 
-\section{Goal}
+\section{Scouting}
 \begin{frame}
   \begin{itemize}
   \item We wanted to know what determined how fast a scout found items and bottlecaps
@@ -104,6 +106,20 @@ l&0.042945&0.073570&0.584&0.5600&\\
 \includegraphics[width=\textwidth]{nitems.png}
 \end{frame}
 
+
+\section{Conclusion: Items}
+\begin{frame}
+  \frametitle{Retrieval: Conclusions}
+  \begin{itemize}
+  \item Difficult to determine what affects items found. Two p-values stand out, but are still bad.
+    \begin{itemize}
+    \item Intercept has p-value $0.096$
+    \item Agility has p-value $0.11$
+    \item<2-> Probably constant, but we need more data to be sure.
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 \section{Caps Per Hour}
 \begin{frame}
   \frametitle{Retrieval: Bottlecaps}
@@ -130,17 +146,11 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \end{table}
 \end{frame}
 
-\section{Conclusions}
+
+\section{Conclusion: Caps}
 \begin{frame}
-  \frametitle{Retrieval: Conclusions}
-  \begin{itemize}
-  \item Difficult to determine what affects items found. Two p-values stand out, but are still bad.
-    \begin{itemize}
-    \item Intercept has p-value $0.096$
-    \item Agility has p-value $0.11$
-    \item<2-> Probably constant, but we need more data to be sure.
-    \end{itemize}
-  \item<3-> Caps found determined by Luck (p-value < machine $\varepsilon$). There's also a base value (intercept).
+\begin{itemize}
+  \item Caps found determined by Luck (p-value < machine $\varepsilon$). There's also a base value (intercept).
   \begin{itemize}
   \item Also a small but clearly negative correlation with level, hard to tell why this is.
   \end{itemize}
@@ -161,29 +171,29 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \section{Summary: Survival Time}
 \begin{frame}
   \frametitle{Survival: P-values}
-  \begin{table}[]
-    \centering
-    \caption{Survival time}
-    \label{table:survival.time}
-    \begin{tabular}{l|lllll}
-      &t value&Pr(>|t|)& \\ 
-      \hline
-      (Intercept)    &  -1.7983755246 & 0.074911&. \\ 
-      s              &  2.4166724012  & 0.017339 &*\\
-      p              &  0.9644124169  & 0.336994 &\\
-      e              &  7.6484812878  & 9e-11&*** \\
-      c              &  0.6092526555  & 0.543637& \\
-      i              &  1.9626433352  & 0.052260& .\\
-      a              &  1.0647793211  & 0.289351& \\
-      l              &  -5.9440869849 & 3e-7&*** \\
-      start.level    &  12.3797838804 & <2e-16&*** \\
-      start.damage   &  4.1308435539  & 7e-4&*** \\
-      level.increase &  6.4636998849  & 3e-8 &***\\
-      caps           &  6.2586709017  & 8e-8&*** \\
-      death.damage   &  0.7153117136  & 0.475960&\\
-      \hline
-    \end{tabular}
-  \end{table}
+\begin{table}[]
+\centering
+\caption{Survival time}
+\label{table:survival.time}
+\begin{tabular}{l|lll}
+&Estimate Std.&Pr(>|t|)& \\ 
+\hline
+(Intercept)    & -0.62884167069  & 0.074911&. \\ 
+s              & 0.05346141178    & 0.017339 &*\\
+p              & 0.02862342249    & 0.336994 &\\
+e              & 0.18123434236    & 9e-11&*** \\
+c              & 0.01608604571    & 0.543637& \\
+i              & 0.05055419848    & 0.052260& .\\
+a              & 0.02581622298    & 0.289351& \\
+l              & -0.26496311935  & 3e-7&*** \\
+start.level    & 0.11302287177   & <2e-16&*** \\
+start.damage   & 0.14667002834    & 7e-4&*** \\
+level.increase & 0.55390718215    & 3e-8 &***\\
+caps           & 0.00310366533    & 8e-8&*** \\
+death.damage   & 0.01143465929    & 0.475960&\\
+\hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 \section{Survival: Tested Models}
@@ -205,17 +215,21 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \begin{itemize}
   \item Since we only have limited data, error values vary, but the order is largely consistent.
   \item We used squared logarithmic errors.
-    \begin{itemize}
-    \item Linear : 0.02197829
-    \item E-squared : 0.02410209
-    \item L-squared : 0.02410209
-    \item Level-squared : 0.02410209
-    \item E-cubed : 0.02469169
-    \item L-cubed : 0.02469169
-    \item Level-cubed : 0.02469169
-    \item Random forest : 0.04621143
-    \end{itemize}
-  \end{itemize}
+    \begin{table}
+      \begin{tabular}{l|ll}
+        &\textbf{Model}&\textbf{MSLE}\\\hline
+        1 & Linear & 0.03840157 \\
+        2 & E-cubed & 0.04011285 \\
+        3 & E-squared & 0.04022501 \\
+        4 & L-squared & 0.04054431 \\
+        5 & L-cubed & 0.0405978 \\
+        6 & Level-squared & 0.0443507 \\
+        7 & Level-cubed & 0.04464607 \\
+        8 & Random forest & 0.07228656 \\
+        \hline  &&
+      \end{tabular}
+  \end{table}
+\end{itemize}
 \end{frame}
 
 
@@ -242,8 +256,7 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
 \begin{frame}
   \begin{itemize}
   \item A rough guess for the survival time of a given scout appears to be $(0.15(e+level)+0.4\cdot damage)$ hours.
-  \item More research might be useful, especially into why starting damage apparently increases survival time.
-  \item 
+  \item Performance varies wildly between tests, more data/more thorough analysis might be prudent.
   \end{itemize}
 \end{frame}
 
