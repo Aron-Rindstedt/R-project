@@ -33,11 +33,12 @@
   \centering
   \includegraphics[scale=.3]{Fallout_Shelter_gameplay}
   \begin{itemize}
-  \item Postapocalyptic mobile game
-  \item You control a shelter full of dwellers
-  \item One thing dwellers can do is scout
-  \item Scouts retrieve bottlecaps and items
-  \item Scouts face deadly challenges
+  \item Postapocalyptic mobile game.
+  \item You control a shelter full of dwellers.
+  \item Dwellers can scout the wasteland.
+  \begin{itemize}
+  \item Scouts retrieve bottlecaps and gear.
+  \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -157,15 +158,25 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \end{itemize}
 \end{frame}
 
-\section{Survival}
+\section{Survival: Intro}
 \begin{frame}
   \frametitle{Survival: Intro}
   \begin{itemize}
-  \item Scouts face a variety of threats.
-  \item Threats can deal damage both as lost hit points and radiation, too much of either results in death.
+  \item Scouts run into dangerous foes and radiation.
+  \item Opponents can deal damage to hit points, radiation lowers the hit point cap.
+  \begin{itemize}
+  \item A dweller with no more health dies
   \item Death is nonpermanent but expensive.
-  \item By calculating the expected time of death for a scout we can choose how long we dare to let our scouts roam.
   \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+  \includegraphics[width = .9\textwidth]{death}
+  \hfill\\
+  \only<1>{Any Game of Thrones fan's nightmare...}
+  \only<2>{By calculating the expected time of death for a scout we can choose how long we dare to let our scouts roam.}
 \end{frame}
 
 \section{Summary: Survival Time}
@@ -173,23 +184,23 @@ death.damage & 0.30906873   &  0.88693  &  0.377067&\\
   \frametitle{Survival: P-values}
 \begin{table}[]
 \centering
-\caption{Survival time}
+\caption{Significance of predictors in a linear model}
 \label{table:survival.time}
 \begin{tabular}{l|lll}
-&Estimate Std.&Pr(>|t|)& \\ 
+&Estimate&Pr(>|t|)& \\ 
 \hline
 (Intercept)    & -0.62884167069  & 0.074911&. \\ 
 s              & 0.05346141178    & 0.017339 &*\\
 p              & 0.02862342249    & 0.336994 &\\
-e              & 0.18123434236    & 9e-11&*** \\
+\textbf{e}		& \textbf{0.18123434236}    & \textbf{9e-11}&\textbf{***} \\
 c              & 0.01608604571    & 0.543637& \\
 i              & 0.05055419848    & 0.052260& .\\
 a              & 0.02581622298    & 0.289351& \\
-l              & -0.26496311935  & 3e-7&*** \\
-start.level    & 0.11302287177   & <2e-16&*** \\
-start.damage   & 0.14667002834    & 7e-4&*** \\
-level.increase & 0.55390718215    & 3e-8 &***\\
-caps           & 0.00310366533    & 8e-8&*** \\
+\textbf{l}              & \textbf{-0.26496311935}  & \textbf{3e-7}&\textbf{***} \\
+\textbf{start.level}    & \textbf{0.11302287177}   & \textbf{<2e-16}&\textbf{***} \\
+\textbf{start.damage}   & \textbf{0.14667002834}    & \textbf{7e-4}&\textbf{***} \\
+\textbf{level.increase} & \textbf{0.55390718215}    & \textbf{3e-8} &\textbf{***}\\
+\textbf{caps}           & \textbf{0.00310366533}    & \textbf{8e-8}&\textbf{***} \\
 death.damage   & 0.01143465929    & 0.475960&\\
 \hline
 \end{tabular}
@@ -200,10 +211,11 @@ death.damage   & 0.01143465929    & 0.475960&\\
 \begin{frame}
   \frametitle{Survival: Models}
   \begin{itemize}
-  \item The best p-values among the controllable variables belong to endurance, luck, level, and starting damage.
+  \item The best p-values among the controllable variables belong to Endurance, Luck, level, and the damage of the equipped weapon.
+  \item We discarded number of caps and level increase since we can not use them.
   \item Selected models
     \begin{itemize}
-    \item Linear model over all four
+    \item Linear model over all predictors
     \item Higher order polynomial models over (exactly) one predictor
     \item Random forest
     \end{itemize}
@@ -214,7 +226,8 @@ death.damage   & 0.01143465929    & 0.475960&\\
 \begin{frame}
   \begin{itemize}
   \item Since we only have limited data, error values vary, but the order is largely consistent.
-  \item We used squared logarithmic errors.
+    \item<2-> The polynomial models are using very small values for the higher orders, essentially of degree 1.
+	\item[]<1-1>
     \begin{table}
       \begin{tabular}{l|ll}
         &\textbf{Model}&\textbf{MSLE}\\\hline
@@ -226,13 +239,12 @@ death.damage   & 0.01143465929    & 0.475960&\\
         6 & Level-squared & 0.0443507 \\
         7 & Level-cubed & 0.04464607 \\
         8 & Random forest & 0.07228656 \\
-        \hline  &&
       \end{tabular}
   \end{table}
 \end{itemize}
 \end{frame}
 
-
+\section{Survival: Selected Model}
 \begin{frame}
   \begin{itemize}
   \item Linear data summary
@@ -255,8 +267,11 @@ death.damage   & 0.01143465929    & 0.475960&\\
 \section{Survival: Conclusions}
 \begin{frame}
   \begin{itemize}
-  \item A rough guess for the survival time of a given scout appears to be $(0.15(e+level)+0.4\cdot damage)$ hours.
-  \item Performance varies wildly between tests, more data/more thorough analysis might be prudent.
+  \item A rough guess for the survival time of a given scout is $(0.15(e+level)+0.4\cdot damage)$ hours.
+  \item Performance varies greatly due to noise, need more data for a more exact model.
+  \begin{itemize}
+  \item Luck is probably a false positive
+  \end{itemize}
   \end{itemize}
 \end{frame}
 
